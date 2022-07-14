@@ -1,0 +1,26 @@
+# project(CursesDraw)
+
+set(HEADERS
+    UserInterface.h
+    KeyboardInput.h
+    CursorLimits.h
+    )
+    
+set(SOURCES 
+    main.cpp
+    UserInterface.cpp
+    KeyboardInput.cpp
+    CursorLimits.cpp
+    )
+
+add_executable(
+    ${PROJECT_NAME}
+    ${HEADERS}
+    ${SOURCES}
+    )
+
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    target_link_libraries(${PROJECT_NAME} ncurses)
+endif()
+
+install(TARGETS ${PROJECT_NAME} DESTINATION ${PREFIX}/bin)
