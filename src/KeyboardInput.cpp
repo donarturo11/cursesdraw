@@ -36,11 +36,19 @@ void KeyboardInput::commandLine()
     while (1)
     {
         c=getch();
-        ui->putChar(c);
-        ui->move(1, 0);
-        if (c!='\n') ss << c;
+        if (c!=127){
+            ui->putChar(c);
+            ui->move(1, 0);
+        } else {
+            ui->putChar(' ');
+            ui->move(-1, 0);
+            ui->putChar(' ');
+        }
+        if (c!='\n' || c!='\a') ss << c;
         if (c=='\n') {
-            ui->runCmd(ss.str());
+            ui->printText(ss.str());
+            getch();
+            //ui->runCmd(ss.str());
             break;
             }
     }

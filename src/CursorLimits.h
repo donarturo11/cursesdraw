@@ -15,6 +15,7 @@ class CursorLimits
         bool positionIsPossible();
         bool positionIsOnBorder();
         bool moveIsPossible();
+        bool positionIsMoved()
     protected:
         Range positionX;
         Range positionY;

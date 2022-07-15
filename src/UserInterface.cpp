@@ -2,13 +2,13 @@
 #include "KeyboardInput.h"
 
 
-UserInterface::UserInterface() 
+UserInterface::UserInterface()
 {
     setWindowProps(40, 40, 0, 0);
-    setCursorPosition(0, 0);
     cursorlimits->updateCursorPosition(&cursorPosition, &cursorPositionPrevious);
+    setCursorPosition(0, 0);
     init();
-    endwin();    
+    endwin();
 }
 
 void UserInterface::setWindowProps(int width, int height, int x, int y)
@@ -25,7 +25,7 @@ void UserInterface::setWindowProps(int width, int height, int x, int y)
 
 void UserInterface::init()
 {
-    //newterm(NULL, stderr, stdin); 
+    //newterm(NULL, stderr, stdin);
     initscr();
     clear();
     win = newwin(windowProps.width, windowProps.height, windowProps.x, windowProps.y);
@@ -67,27 +67,25 @@ void UserInterface::bindCommands()
 
 void UserInterface::move(int x, int y)
 {
-    this->cursorPositionPrevious.x=this->cursorPosition.x;
-    this->cursorPositionPrevious.y=this->cursorPosition.y;
-    
     x+=this->cursorPosition.x;
     y+=this->cursorPosition.y;
-    
-    if (!cursorlimits->positionIsPossible()){
-         x=this->cursorPositionPrevious.x;   
-         y=this->cursorPositionPrevious.y;   
-    } 
-    
     setCursorPosition(x, y);
 }
 
 void UserInterface::setCursorPosition(int x, int y)
 {
-    this->cursorPosition.x=x;
-    this->cursorPosition.y=y;
-    wmove(this->win, y, x);
-    printCursorPositionShort();
-    wrefresh(this->win);
+    this->cursorPositionPrevious.x=this->cursorPosition.x;
+    this->cursorPositionPrevious.y=this->cursorPosition.y;
+    if (cursorlimits->positionIsPossible()){
+        this->cursorPosition.x=x;
+        this->cursorPosition.y=y;
+    } else {
+        this->cursorPosition.x=this->cursorPositionPrevious.x;
+        this->cursorPosition.y=this->cursorPositionPrevious.y;
+    }
+    //wmove(this->win, this->cursorPosition.y, this->cursorPosition.x);
+    //wrefresh(this->win);
+    //printCursorPosition();
 }
 
 
@@ -124,7 +122,7 @@ void UserInterface::printText(std::string text)
     mvwprintw(this->win, 0, 0, "%s", text.c_str());
     setCursorPosition(cursorPosition.x, cursorPosition.y);
     wrefresh(this->win);
-    
+
 }
 
 void UserInterface::beep(int freq, int length)
@@ -171,6 +169,7 @@ void UserInterface::printCursorPosition()
     msg << cursorlimits->getParametersMsg() << "\n";
     msg << "PositionIsPossible: " << cursorlimits->positionIsPossible() << "\n";
     msg << "PositionIsOnBorder: " << cursorlimits->positionIsOnBorder() << "\n";
+    msg << "PositionIsMoved: " << cursorlimits->positionIsMoved() << "\n";
     msg << "MoveIsPossible: " << cursorlimits->moveIsPossible() << "\n";
     printText(msg.str());
 }
@@ -180,8 +179,8 @@ void UserInterface::printCursorPositionShort()
     std::stringstream ss;
     ss << "Cursor position:  ";
     ss << "x=" << cursorPosition.x << " | " << "y=" << cursorPosition.y;
-    
-    mvwprintw(this->win, windowProps.height-1, 0, "Cursor %s", ss.str().c_str());
+
+    mvwprintw(this->win, windowProps.height-2, 1, "Cursor");
     wmove(this->win, cursorPosition.y, cursorPosition.x);
     wrefresh(this->win);
 }
