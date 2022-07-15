@@ -8,6 +8,11 @@ KeyboardInput::KeyboardInput(UserInterface* ui)
     controlLoop();
 }
 
+KeyboardInput::~KeyboardInput()
+{
+    this->ui=nullptr;
+}
+
 void KeyboardInput::controlLoop()
 {
     ui->runCmd("clear");
@@ -26,34 +31,7 @@ void KeyboardInput::controlLoop()
 
 void KeyboardInput::commandLine()
 {
-    //this->focus=false;
-    ui->clearScreen();
-    ui->move(0, 10);
-    ui->putChar('>');
-    ui->move(1, 0);
-    char c;
-    std::stringstream ss;
-    while (1)
-    {
-        c=getch();
-        if (c!=127){
-            ui->putChar(c);
-            ui->move(1, 0);
-        } else {
-            ui->putChar(' ');
-            ui->move(-1, 0);
-            ui->putChar(' ');
-        }
-        if (c!='\n' || c!='\a') ss << c;
-        if (c=='\n') {
-            ui->printText(ss.str());
-            getch();
-            //ui->runCmd(ss.str());
-            break;
-            }
-    }
-    controlLoop();
-    
+    // to implement or move to another class    
 }
 
 void KeyboardInput::initShortcuts()
@@ -77,14 +55,9 @@ void KeyboardInput::keyboardControl(int code)
     else ui->runCmd(this->shortcuts[code]);
 }
 
-void KeyboardInput::testKeyboard(int code)
-{
-    
-}
-
 bool KeyboardInput::isArrowPressed(int code)
 {
-    return (code==KEY_UP || code==KEY_DOWN || code==KEY_RIGHT || code==KEY_LEFT) ? true : false;
+    return (code==KEY_UP || code==KEY_DOWN || code==KEY_RIGHT || code==KEY_LEFT);
 }
 
 void KeyboardInput::arrowKey(int code)
