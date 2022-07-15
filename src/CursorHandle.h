@@ -25,6 +25,7 @@ class CursorHandle
         bool positionIsMoved();
         void move(int x, int y);
         void setCursorPosition(int x, int y);
+        void setCursorPositionMsg(int x, int y);
         position getCursorPosition();
     protected:
         UserInterface *ui;

@@ -32,39 +32,41 @@ void CursorHandle::setRange(Range* range, int min, int max)
 
 void CursorHandle::move(int x, int y)
 {
-    
-    std::stringstream ss;
-    ss << "move(" << x << ", " << y << ")";
-    ss << "current position: \n" ;
-    ss << "x: " << this->cursorPosition.x << "\n";
-    ss << "y: " << this->cursorPosition.y << "\n";
-    
-    this->cursorPositionPrevious.x=this->cursorPosition.x;
-    this->cursorPositionPrevious.y=this->cursorPosition.y;
-    setCursorPosition(this->cursorPosition.x+x, this->cursorPosition.y+y);
+    //this->cursorPositionPrevious.x=this->cursorPosition.x;
+    //this->cursorPositionPrevious.y=this->cursorPosition.y;
+    //this->cursorPosition.x+=x;
+    //this->cursorPosition.y+=y;
+    int curX=this->cursorPosition.x;
+    int curY=this->cursorPosition.y;
+    curX+=x;
+    curY+=y;
+    setCursorPosition(curX, curY);
     
     //ui->printText(ss.str());
 }
 
 void CursorHandle::setCursorPosition(int x, int y)
 {
-    std::stringstream ss;
-    
-        ss << "setCursorPosition(" << x << ", " << y << ")\n";
-        ss << "Position is moved: " << this->positionIsMoved() << "\n";
         this->cursorPosition.x=x;
-        ss << "x: " << this->cursorPosition.x << "\n";
         this->cursorPosition.y=y;
-        ss << "y: " << this->cursorPosition.y << "\n";
-     
-    
-    ui->printText(ss.str());
-    
+        
+        setCursorPositionMsg(x, y);
+        
     /* Move to UserInterface
     //wmove(this->win, this->cursorPosition.y, this->cursorPosition.x);
     //wrefresh(this->win);
     //printCursorPosition();
     */ 
+}
+
+void CursorHandle::setCursorPositionMsg(int x, int y)
+{
+    std::stringstream ss;
+    ss << "setCursorPosition(" << x << ", " << y << ")\n";
+    ss << "Position is moved: " << this->positionIsMoved() << "\n";
+    ss << "x: " << this->cursorPosition.x << "\n";
+    ss << "y: " << this->cursorPosition.y << "\n";
+    ui->printText(ss.str());
 }
 
 position CursorHandle::getCursorPosition()
