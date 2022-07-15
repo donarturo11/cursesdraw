@@ -3,14 +3,14 @@
 set(HEADERS
     UserInterface.h
     KeyboardInput.h
-    CursorLimits.h
+    CursorHandle.h
     )
     
 set(SOURCES 
     main.cpp
     UserInterface.cpp
     KeyboardInput.cpp
-    CursorLimits.cpp
+    CursorHandle.cpp
     )
 
 add_executable(
