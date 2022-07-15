@@ -29,11 +29,11 @@ std::string CursorLimits::getParametersMsg()
     ss << "y (max) = " << this->positionY.max << "\n";
     ss << "Cursor position\n";
     ss << "current:\n";
-    ss << "x: " << this->cursorPosition->x << "\n"; 
-    ss << "y: " << this->cursorPosition->y << "\n"; 
+    ss << "x: " << this->cursorPosition->x << "\n";
+    ss << "y: " << this->cursorPosition->y << "\n";
     ss << "Previous:\n";
-    ss << "x: " << this->cursorPositionPrevious->x << "\n"; 
-    ss << "y: " << this->cursorPositionPrevious->y << "\n"; 
+    ss << "x: " << this->cursorPositionPrevious->x << "\n";
+    ss << "y: " << this->cursorPositionPrevious->y << "\n";
     return ss.str();
 }
 
@@ -53,8 +53,15 @@ bool CursorLimits::positionIsOnBorder()
     return (borderlineX || borderlineY);
 }
 
+bool CursorLimits::positionIsMoved()
+{
+    bool positionXmoved = cursorPosition->x!=cursorPositionPrevious->x;
+    bool positionYmoved = cursorPosition->y!=cursorPositionPrevious->y;
+    return (positionXmoved || positionYmoved);
+}
+
 bool CursorLimits::moveIsPossible()
 {
-    
+
     return true;
 }
