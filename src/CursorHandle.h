@@ -19,12 +19,14 @@ class CursorHandle
         std::string getParametersMsg();
         bool positionIsPossible();
         bool positionIsOnBorder();
-        bool moveIsPossible();
+        bool moveIsPossible(int x, int y);
         bool positionIsMoved();
         void move(int x, int y);
         void setCursorPosition(int x, int y);
+        void setCursorPositionPrevious(int x, int y);
         void setCursorPositionMsg(int x, int y);
         position getCursorPosition();
+        position getCursorPositionPrevious();
     protected:
         UserInterface *ui;
         Range positionX;

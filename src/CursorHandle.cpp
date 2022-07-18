@@ -34,33 +34,32 @@ void CursorHandle::setRange(Range* range, int min, int max)
 
 void CursorHandle::move(int x, int y)
 {
-    //this->cursorPositionPrevious.x=this->cursorPosition.x;
-    //this->cursorPositionPrevious.y=this->cursorPosition.y;
-    //this->cursorPosition.x+=x;
-    //this->cursorPosition.y+=y;
-    int curX=this->cursorPosition->x;
-    int curY=this->cursorPosition->y;
-    if (x!=0) curX++;
-    if (y!=0) curY++;
-    fprintf(stderr, "\fmove(%i, %i) = %i, %i\r\n", x, y, this->cursorPosition->x, this->cursorPosition->y);
+    
+    int curX=this->getCursorPosition().x;
+    int curY=this->getCursorPosition().y;
+    this->setCursorPositionPrevious(curX, curY);
+    curX+=x;
+    curY+=y;
+    
     this->setCursorPosition(curX, curY);
-
 }
 
 void CursorHandle::setCursorPosition(int x, int y)
 {
-        
-    fprintf(stderr, "setCursorPosition(%i, %i) = %i, %i\r\n", x, y, this->getCursorPosition().x, this->getCursorPosition().y);    
-        //setCursorPositionMsg(x, y);
-        
-    /* Move to UserInterface
-    //wmove(this->win, this->cursorPosition.y, this->cursorPosition.x);
-    //wrefresh(this->win);
-    //printCursorPosition();
-    */ 
     this->cursorPosition->x=x;
     this->cursorPosition->y=y;
+    if (!positionIsPossible()) {
+        int prevX=getCursorPositionPrevious().x;
+        int prevY=getCursorPositionPrevious().y;
+        setCursorPosition(prevX, prevY);
+    }
     
+}
+
+void CursorHandle::setCursorPositionPrevious(int x, int y)
+{
+    this->cursorPositionPrevious->x=x;
+    this->cursorPositionPrevious->y=y;
 }
 
 void CursorHandle::setCursorPositionMsg(int x, int y)
@@ -81,6 +80,13 @@ position CursorHandle::getCursorPosition()
     return curPos;
 }
 
+position CursorHandle::getCursorPositionPrevious()
+{
+    position prevPos;
+    prevPos.x = this->cursorPositionPrevious->x;
+    prevPos.y = this->cursorPositionPrevious->y;
+    return prevPos;
+}
 
 std::string CursorHandle::getParametersMsg()
 {
@@ -93,9 +99,9 @@ std::string CursorHandle::getParametersMsg()
     ss << "current:\n";
     ss << "x: " << this->getCursorPosition().x	<< "\n";
     ss << "y: " << this->getCursorPosition().y << "\n";
-    //ss << "Previous:\n";
-    //ss << "x: " << this->cursorPositionPrevious.x << "\n";
-    //ss << "y: " << this->cursorPositionPrevious.y << "\n";
+    ss << "Previous:\n";
+    ss << "x: " << this->getCursorPositionPrevious().x << "\n";
+    ss << "y: " << this->getCursorPositionPrevious().y << "\n";
     return ss.str();
 }
 
@@ -122,7 +128,7 @@ bool CursorHandle::positionIsMoved()
     return (positionXmoved || positionYmoved);
 }
 
-bool CursorHandle::moveIsPossible()
+bool CursorHandle::moveIsPossible(int x, int y)
 {
     return true;
 }
