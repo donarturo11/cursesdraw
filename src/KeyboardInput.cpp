@@ -8,6 +8,11 @@ KeyboardInput::KeyboardInput(UserInterface* ui)
     controlLoop();
 }
 
+KeyboardInput::~KeyboardInput()
+{
+    this->ui=nullptr;
+}
+
 void KeyboardInput::controlLoop()
 {
     ui->runCmd("clear");
@@ -26,6 +31,9 @@ void KeyboardInput::controlLoop()
 
 void KeyboardInput::commandLine()
 {
+<<<<<<< HEAD
+    // to implement or move to another class    
+=======
     //this->focus=false;
     ui->clearScreen();
     ui->move(0, 10);
@@ -54,10 +62,12 @@ void KeyboardInput::commandLine()
     }
     controlLoop();
     
+>>>>>>> main
 }
 
 void KeyboardInput::initShortcuts()
 {
+    this->shortcuts['a']="beep";
     this->shortcuts['s']="start";
     this->shortcuts['c']="clear";
     this->shortcuts['x']="addX";
@@ -77,14 +87,9 @@ void KeyboardInput::keyboardControl(int code)
     else ui->runCmd(this->shortcuts[code]);
 }
 
-void KeyboardInput::testKeyboard(int code)
-{
-    
-}
-
 bool KeyboardInput::isArrowPressed(int code)
 {
-    return (code==KEY_UP || code==KEY_DOWN || code==KEY_RIGHT || code==KEY_LEFT) ? true : false;
+    return (code==KEY_UP || code==KEY_DOWN || code==KEY_RIGHT || code==KEY_LEFT);
 }
 
 void KeyboardInput::arrowKey(int code)

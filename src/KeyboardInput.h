@@ -8,11 +8,11 @@ class KeyboardInput
 {
     public:
         KeyboardInput(UserInterface* ui);
+        ~KeyboardInput();
         bool isArrowPressed(int code);
     private:
         void initShortcuts();
         void keyboardControl(int code);
-        void testKeyboard(int code);
         void controlLoop();
         void commandLine();
         void arrowKey(int code);
