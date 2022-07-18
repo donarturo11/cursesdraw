@@ -5,11 +5,6 @@
 UserInterface::UserInterface()
 {
     setWindowProps(40, 40, 0, 0);
-<<<<<<< HEAD
-=======
-    cursorlimits->updateCursorPosition(&cursorPosition, &cursorPositionPrevious);
-    setCursorPosition(0, 0);
->>>>>>> main
     init();
     endwin();
 }
@@ -19,10 +14,7 @@ void UserInterface::setWindowProps(int width, int height, int x, int y)
     this->windowProps.width=width;
     this->windowProps.height=height;
     this->windowProps.x=x;
-    this->windowProps.y=y;
-
-    //cursorhandle = std::make_unique<CursorHandle>(width, height);
-    
+    this->windowProps.y=y;    
 }
 
 void UserInterface::init()
@@ -31,6 +23,7 @@ void UserInterface::init()
     initscr();
     clear();
     win = newwin(windowProps.width, windowProps.height, windowProps.x, windowProps.y);
+    //cursorhandle = std::make_unique<CursorHandle>(this);
     cursorhandle = new CursorHandle(this);
     raw();
     noecho();
@@ -42,15 +35,12 @@ void UserInterface::init()
 
 void UserInterface::runCmd(std::string cmd)
 {
-    std::string msg="Command " + cmd + " ";
     if (this->commandMap[cmd]){
        this->commandMap[cmd]();
-       msg+="is defined";
     } else {
-       msg+="is not defined";
+       std::string msg="Command " + cmd + " is not defined."; 
        this->printText(msg);
    }
-   //this->printText(msg);
 }
 
 void UserInterface::bindCommands()
@@ -70,33 +60,6 @@ void UserInterface::bindCommands()
     this->commandMap["moveRIGHT"]=std::bind(&UserInterface::moveCursor, this, 1, 0);
 }
 
-<<<<<<< HEAD
-=======
-void UserInterface::move(int x, int y)
-{
-    x+=this->cursorPosition.x;
-    y+=this->cursorPosition.y;
-    setCursorPosition(x, y);
-}
-
-void UserInterface::setCursorPosition(int x, int y)
-{
-    this->cursorPositionPrevious.x=this->cursorPosition.x;
-    this->cursorPositionPrevious.y=this->cursorPosition.y;
-    if (cursorlimits->positionIsPossible()){
-        this->cursorPosition.x=x;
-        this->cursorPosition.y=y;
-    } else {
-        this->cursorPosition.x=this->cursorPositionPrevious.x;
-        this->cursorPosition.y=this->cursorPositionPrevious.y;
-    }
-    //wmove(this->win, this->cursorPosition.y, this->cursorPosition.x);
-    //wrefresh(this->win);
-    //printCursorPosition();
-}
-
-
->>>>>>> main
 void UserInterface::putChar(char c)
 {
     wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
@@ -128,12 +91,8 @@ void UserInterface::printText(std::string text)
 {
     wclear(this->win);
     mvwprintw(this->win, 0, 0, "%s", text.c_str());
-    //setCursorPosition(cursorPosition.x, cursorPosition.y);
+    refreshCursor();
     wrefresh(this->win);
-<<<<<<< HEAD
-=======
-
->>>>>>> main
 }
 
 void UserInterface::beep(int freq, int length)
@@ -178,18 +137,12 @@ void UserInterface::printCursorPosition()
 {
     std::stringstream msg;
     msg << "Cursor parameters" << "\n";
-<<<<<<< HEAD
+
     msg << cursorhandle->getParametersMsg() << "\n";
     msg << "PositionIsPossible: " << cursorhandle->positionIsPossible() << "\n";
     msg << "PositionIsOnBorder: " << cursorhandle->positionIsOnBorder() << "\n";
     msg << "PositionIsMoved: " << cursorhandle->positionIsMoved() << "\n";
-=======
-    msg << cursorlimits->getParametersMsg() << "\n";
-    msg << "PositionIsPossible: " << cursorlimits->positionIsPossible() << "\n";
-    msg << "PositionIsOnBorder: " << cursorlimits->positionIsOnBorder() << "\n";
-    msg << "PositionIsMoved: " << cursorlimits->positionIsMoved() << "\n";
-    msg << "MoveIsPossible: " << cursorlimits->moveIsPossible() << "\n";
->>>>>>> main
+
     printText(msg.str());
 }
 
@@ -197,17 +150,12 @@ void UserInterface::printCursorPositionShort()
 {
     std::stringstream ss;
     ss << "Cursor position:  ";
-<<<<<<< HEAD
+
     ss << "x=" << cursorhandle->getCursorPosition().x << " | " << "y=" << cursorhandle->getCursorPosition().y;
 
     mvwprintw(this->win, windowProps.height-2, 1, "Cursor");
     wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
-=======
-    ss << "x=" << cursorPosition.x << " | " << "y=" << cursorPosition.y;
 
-    mvwprintw(this->win, windowProps.height-2, 1, "Cursor");
-    wmove(this->win, cursorPosition.y, cursorPosition.x);
->>>>>>> main
     wrefresh(this->win);
 }
 
