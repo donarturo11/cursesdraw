@@ -11,8 +11,6 @@ class UserInterface;
 
 class CursorHandle
 {
-        position cursorPosition;
-        position cursorPositionPrevious;
     public:
         CursorHandle(int width, int height);
         CursorHandle(UserInterface *ui);
@@ -31,7 +29,9 @@ class CursorHandle
         UserInterface *ui;
         Range positionX;
         Range positionY;
-        
+    private:
+        position *cursorPosition;
+        position *cursorPositionPrevious;
         
         
 };
