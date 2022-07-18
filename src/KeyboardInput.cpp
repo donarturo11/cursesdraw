@@ -31,14 +31,13 @@ void KeyboardInput::controlLoop()
 
 void KeyboardInput::commandLine()
 {
-<<<<<<< HEAD
-    // to implement or move to another class    
-=======
+
+    // to reimplement or move to another class    
     //this->focus=false;
     ui->clearScreen();
-    ui->move(0, 10);
+    ui->moveCursor(0, 10);
     ui->putChar('>');
-    ui->move(1, 0);
+    ui->moveCursor(1, 0);
     char c;
     std::stringstream ss;
     while (1)
@@ -46,10 +45,10 @@ void KeyboardInput::commandLine()
         c=getch();
         if (c!=127){
             ui->putChar(c);
-            ui->move(1, 0);
+            ui->moveCursor(1, 0);
         } else {
             ui->putChar(' ');
-            ui->move(-1, 0);
+            ui->moveCursor(-1, 0);
             ui->putChar(' ');
         }
         if (c!='\n' || c!='\a') ss << c;
@@ -62,7 +61,6 @@ void KeyboardInput::commandLine()
     }
     controlLoop();
     
->>>>>>> main
 }
 
 void KeyboardInput::initShortcuts()
