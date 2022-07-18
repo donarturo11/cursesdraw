@@ -22,12 +22,14 @@ class UserInterface
         void start();
         void stop();
         void runCmd(std::string cmd);
+        void refreshCursor();
         void printCursorPosition();
         void printCursorPositionShort();
         void clearScreen();
         void putChar(char c);
         void setAttr(int attr);
         void getAttr();
+        void moveCursor(int x, int y);
         bool getRunningStatus();
         objectProps getWindowProperties();
         

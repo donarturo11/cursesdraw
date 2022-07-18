@@ -59,10 +59,10 @@ void UserInterface::bindCommands()
     this->commandMap["getAttributes"]=std::bind( &UserInterface::getAttr, this);
     this->commandMap["beep"]=std::bind( &UserInterface::beep, this, 100, 100);
     this->commandMap["printCursorPosition"]=std::bind(&UserInterface::printCursorPosition, this);
-    this->commandMap["moveUP"]=std::bind(&CursorHandle::move, *cursorhandle, 0, -1);
-    this->commandMap["moveDOWN"]=std::bind(&CursorHandle::move, *cursorhandle, 0, 1);
-    this->commandMap["moveLEFT"]=std::bind(&CursorHandle::move, *cursorhandle, -1, 0);
-    this->commandMap["moveRIGHT"]=std::bind(&CursorHandle::move, *cursorhandle, 1, 0);
+    this->commandMap["moveUP"]=std::bind(&UserInterface::moveCursor, this, 0, -1);
+    this->commandMap["moveDOWN"]=std::bind(&UserInterface::moveCursor, this, 0, 1);
+    this->commandMap["moveLEFT"]=std::bind(&UserInterface::moveCursor, this, -1, 0);
+    this->commandMap["moveRIGHT"]=std::bind(&UserInterface::moveCursor, this, 1, 0);
 }
 
 void UserInterface::putChar(char c)
@@ -126,6 +126,18 @@ bool UserInterface::getRunningStatus()
     return this->running;
 }
 
+void UserInterface::refreshCursor()
+{
+    wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
+    wrefresh(this->win);
+}
+
+void UserInterface::moveCursor(int x, int y)
+{
+    cursorhandle->move(x, y);
+    refreshCursor();
+}
+
 void UserInterface::printCursorPosition()
 {
     std::stringstream msg;
@@ -134,7 +146,6 @@ void UserInterface::printCursorPosition()
     msg << "PositionIsPossible: " << cursorhandle->positionIsPossible() << "\n";
     msg << "PositionIsOnBorder: " << cursorhandle->positionIsOnBorder() << "\n";
     msg << "PositionIsMoved: " << cursorhandle->positionIsMoved() << "\n";
-    msg << "MoveIsPossible: " << cursorhandle->moveIsPossible() << "\n";
     printText(msg.str());
 }
 
