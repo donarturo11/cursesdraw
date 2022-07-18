@@ -26,10 +26,11 @@ void UserInterface::init()
     initscr();
     clear();
     win = newwin(windowProps.width, windowProps.height, windowProps.x, windowProps.y);
+    cursorhandle = new CursorHandle(this);
     raw();
     noecho();
     cbreak();
-    cursorhandle = new CursorHandle(this);
+    
     this->bindCommands();
     KeyboardInput keyboard(this);
 }
@@ -56,6 +57,7 @@ void UserInterface::bindCommands()
     this->commandMap["bold"]=std::bind( &UserInterface::setAttr, this, A_BOLD | A_REVERSE);
     this->commandMap["normal"]=std::bind( &UserInterface::setAttr, this, A_NORMAL);
     this->commandMap["getAttributes"]=std::bind( &UserInterface::getAttr, this);
+    this->commandMap["beep"]=std::bind( &UserInterface::beep, this, 100, 100);
     this->commandMap["printCursorPosition"]=std::bind(&UserInterface::printCursorPosition, this);
     this->commandMap["moveUP"]=std::bind(&CursorHandle::move, *cursorhandle, 0, -1);
     this->commandMap["moveDOWN"]=std::bind(&CursorHandle::move, *cursorhandle, 0, 1);
@@ -100,7 +102,7 @@ void UserInterface::printText(std::string text)
 
 void UserInterface::beep(int freq, int length)
 {
-    fprintf(stderr, "\a");
+    fprintf(stderr, "Bell\a\r");
 }
 
 void UserInterface::start()
