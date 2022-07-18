@@ -36,6 +36,7 @@ void KeyboardInput::commandLine()
 
 void KeyboardInput::initShortcuts()
 {
+    this->shortcuts['a']="beep";
     this->shortcuts['s']="start";
     this->shortcuts['c']="clear";
     this->shortcuts['x']="addX";
