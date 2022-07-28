@@ -4,7 +4,7 @@
 
 UserInterface::UserInterface()
 {
-    setWindowProps(40, 40, 0, 0);
+    setWindowProps(20, 20, 0, 0);
     init();
     endwin();
 }
@@ -49,7 +49,7 @@ void UserInterface::bindCommands()
     this->commandMap["start"]=std::bind(&UserInterface::start, this);
     this->commandMap["clear"]=std::bind(&UserInterface::clearScreen, this);
     this->commandMap["addX"]=std::bind( &UserInterface::putChar, this, 'x');
-    this->commandMap["bold"]=std::bind( &UserInterface::setAttr, this, A_BOLD | A_REVERSE);
+    this->commandMap["bold"]=std::bind( &UserInterface::setAttr, this, A_BOLD);
     this->commandMap["normal"]=std::bind( &UserInterface::setAttr, this, A_NORMAL);
     this->commandMap["getAttributes"]=std::bind( &UserInterface::getAttr, this);
     this->commandMap["beep"]=std::bind( &UserInterface::beep, this, 100, 100);
@@ -63,9 +63,9 @@ void UserInterface::bindCommands()
 void UserInterface::putChar(char c)
 {
     wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
-    if (c==winch(this->win)) c=' ';
+    if (c==getAttr()) c=' ';
     waddch(this->win, c);
-    wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
+    //wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
     wrefresh(this->win);
 }
 void UserInterface::setAttr(int attr)
@@ -74,11 +74,9 @@ void UserInterface::setAttr(int attr)
     wrefresh(this->win);
 }
 
-void UserInterface::getAttr()
+char UserInterface::getAttr()
 {
-    std::stringstream ss;
-    ss << "winch: " << (char) winch(this->win);
-    printText(ss.str());
+    return (char) winch(this->win);
 }
 
 void UserInterface::clearScreen()
@@ -123,7 +121,14 @@ bool UserInterface::getRunningStatus()
 
 void UserInterface::refreshCursor()
 {
+    wmove(this->win, cursorhandle->getCursorPositionPrevious().y, cursorhandle->getCursorPositionPrevious().x);
+    //setAttr(A_NORMAL);
+    putChar('T');
+    wrefresh(this->win);
     wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
+    //setAttr(A_BOLD);
+    putChar('#');
+    
     wrefresh(this->win);
 }
 

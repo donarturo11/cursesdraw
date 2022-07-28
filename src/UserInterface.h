@@ -32,7 +32,7 @@ class UserInterface
         void clearScreen();
         void putChar(char c);
         void setAttr(int attr);
-        void getAttr();
+        char getAttr();
         void moveCursor(int x, int y);
         bool getRunningStatus();
         objectProps getWindowProperties();
