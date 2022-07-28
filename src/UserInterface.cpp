@@ -24,6 +24,7 @@ void UserInterface::init()
     clear();
     win = newwin(windowProps.width, windowProps.height, windowProps.x, windowProps.y);
     //cursorhandle = std::make_unique<CursorHandle>(this);
+    curs_set(1);
     cursorhandle = new CursorHandle(this);
     raw();
     noecho();
@@ -65,7 +66,7 @@ void UserInterface::putChar(char c)
     wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
     if (c==getAttr()) c=' ';
     waddch(this->win, c);
-    //wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
+    wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
     wrefresh(this->win);
 }
 void UserInterface::setAttr(int attr)
@@ -121,13 +122,15 @@ bool UserInterface::getRunningStatus()
 
 void UserInterface::refreshCursor()
 {
+
     wmove(this->win, cursorhandle->getCursorPositionPrevious().y, cursorhandle->getCursorPositionPrevious().x);
-    //setAttr(A_NORMAL);
-    putChar('T');
-    wrefresh(this->win);
+    setAttr(A_NORMAL);
+    waddch(this->win, getAttr());
+
     wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
-    //setAttr(A_BOLD);
-    putChar('#');
+    setAttr(A_BOLD);
+    waddch(this->win, getAttr());
+    wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
     
     wrefresh(this->win);
 }
