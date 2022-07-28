@@ -15,10 +15,10 @@
 
 #if defined(_PDCURSES_) && defined(_WIN32)
 #define CURSORPARAMS (A_BOLD | A_REVERSE)
-#elif defined(_PDCURSES_) && defined(_SDL_)
+#elif defined(_PDCURSES_) && defined(_SDL_) // to check
 #define CURSORPARAMS A_BOLD
 #else 
-#define CURSORPARAMS A_NORMAL
+#define CURSORPARAMS A_BOLD 
 #endif
 
 class CursorHandle;
