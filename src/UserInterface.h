@@ -1,6 +1,6 @@
 #ifndef USERINTERFACE_H
 #define USERINTERFACE_H
-#ifdef _WIN32
+#ifdef _PDCURSES_
 #include <pdcurses.h>
 #else
 #include <ncurses.h>
@@ -12,6 +12,14 @@
 #include <memory>
 #include "CursorHandle.h"
 #include "PropertiesTypes.h"
+
+#if defined(_PDCURSES_) && defined(_WIN32)
+#define CURSORPARAMS (A_BOLD | A_REVERSE)
+#elif defined(_PDCURSES_) && defined(_SDL_)
+#define CURSORPARAMS A_BOLD
+#else 
+#define CURSORPARAMS A_NORMAL
+#endif
 
 class CursorHandle;
 

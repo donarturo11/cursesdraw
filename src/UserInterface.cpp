@@ -24,13 +24,16 @@ void UserInterface::init()
     clear();
     win = newwin(windowProps.width, windowProps.height, windowProps.x, windowProps.y);
     //cursorhandle = std::make_unique<CursorHandle>(this);
-    curs_set(1);
+    
     cursorhandle = new CursorHandle(this);
     raw();
     noecho();
     cbreak();
     
     this->bindCommands();
+    
+    setAttr(CURSORPARAMS);
+    waddch(this->win, getAttr());
     KeyboardInput keyboard(this);
 }
 
@@ -122,14 +125,15 @@ bool UserInterface::getRunningStatus()
 
 void UserInterface::refreshCursor()
 {
-
+       
     wmove(this->win, cursorhandle->getCursorPositionPrevious().y, cursorhandle->getCursorPositionPrevious().x);
     setAttr(A_NORMAL);
     waddch(this->win, getAttr());
-
     wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
-    setAttr(A_BOLD);
+    
+    setAttr(CURSORPARAMS);
     waddch(this->win, getAttr());
+    
     wmove(this->win, cursorhandle->getCursorPosition().y, cursorhandle->getCursorPosition().x);
     
     wrefresh(this->win);
