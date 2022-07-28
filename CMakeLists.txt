@@ -12,7 +12,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
  set (CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
-
-find_library(CURSES curses)
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+find_library(CURSES pdcurses)
+else()
+find_library(CURSES ncurses)
+endif()
 
 add_subdirectory(src/)

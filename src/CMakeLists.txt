@@ -19,8 +19,11 @@ add_executable(
     ${SOURCES}
     )
 
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    target_link_libraries(${PROJECT_NAME} ncurses)
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+target_link_libraries(${PROJECT_NAME} pdcurses)
+else()
+target_link_libraries(${PROJECT_NAME} ncurses)
 endif()
+
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${PREFIX}/bin)

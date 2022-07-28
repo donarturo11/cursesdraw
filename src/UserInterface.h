@@ -1,6 +1,10 @@
 #ifndef USERINTERFACE_H
 #define USERINTERFACE_H
+#ifdef _WIN32
+#include <pdcurses.h>
+#else
 #include <ncurses.h>
+#endif
 #include <iostream>
 #include <sstream>
 #include <map>
