@@ -19,8 +19,10 @@ add_executable(
     ${SOURCES}
     )
 
-if(ENABLE_PDCURSES)
+if(ENABLE_PDCURSES AND ENABLE_SDL)
 target_link_libraries(${PROJECT_NAME} pdcurses ${SDL_LIBRARIES})
+elseif(ENABLE_PDCURSES AND ${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+target_link_libraries(${PROJECT_NAME} pdcurses winmm -static)
 else()
 target_link_libraries(${PROJECT_NAME} ncurses)
 endif()
