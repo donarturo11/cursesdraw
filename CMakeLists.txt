@@ -11,6 +11,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
 option(ENABLE_PDCURSES 0)
 option(ENABLE_SDL 0)
+option(ENABLE_TEST 0)
 
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
  set (CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -29,11 +30,17 @@ if(ENABLE_PDCURSES)
     endif()
   else()
     message(STATUS "Building with ncurses")
+    add_compile_definitions(_NCURSES_)
     find_library(CURSES ncurses)
 endif()
 
 if(ENABLE_SDL)
   find_package(SDL)
+  add_compile_definitions(_SDL_)
+endif()
+
+if(ENABLE_TEST)
+  add_compile_definitions(_TEST_)
 endif()
 
 add_subdirectory(src/)
